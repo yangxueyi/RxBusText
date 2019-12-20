@@ -5,7 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.yxy.rxbustext.R
+import com.yxy.rxbustext.viewmodel.MyViewmodel
+import kotlinx.android.synthetic.main.my_fragment.*
 
 /**
  * Created by YangXueYi
@@ -13,6 +18,10 @@ import com.yxy.rxbustext.R
  */
 class MyFragment : Fragment() {
     private var myView :View?=null
+
+    private val myViewmodel : MyViewmodel by lazy {
+        ViewModelProviders.of(this).get(MyViewmodel::class.java)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,6 +33,16 @@ class MyFragment : Fragment() {
         }
 
         return myView
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        myViewmodel.myName.observe(this, Observer {myName ->
+            my_tv.text = myName
+        })
+
+
     }
 
 }
